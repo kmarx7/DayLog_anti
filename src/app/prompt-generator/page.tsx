@@ -67,7 +67,7 @@ const PRESETS: PromptPreset[] = [
     name: "사이버펑크 네온 할일 대시보드",
     description: "완료율에 따라 도시의 네온사인이 밝아지고, 퀘스트를 완료해 도시 빌딩을 해금하는 대시보드",
     appName: "네온 시티 할일 퀘스트 (Neon City Task Quest Dashboard)",
-    role: "10년 차 게임 UI 개발자 및 시니어 사이버펑크 아티스트. 테크니컬하고 화려한 네온 비주얼과 강력한 게임성(Gamification)을 결합한 스케줄러 구현.",
+    role: "10년 차 게임 UI 개발자 및 시니어 사이버펑크 아티스트. 테크니컬하고 화려한 네온 비주벌과 강력한 게임성(Gamification)을 결합한 스케줄러 구현.",
     techStack: "React, Tailwind CSS, Lucide Icons, 사이버펑크 픽셀/SVG 아트 요소 인라인 코딩",
     aestheticStyle: "Cyberpunk 2077 스타일, 네온 글로우(Glow) 효과, 다크 하이테크 UI 테마",
     colorPalette: "다크 카본 블랙(#0B0B0F) 배경, 일렉트릭 핫 핑크(#FF007F) 및 사이버 퍼플(#8A2BE2) 형광 대비 컬러",
@@ -110,37 +110,53 @@ export default function PromptGenerator() {
     setLayout(preset.layout);
   };
 
-  // Generate finalized prompt
+  // Generate finalized prompt with wider line spacing
   const generatedPrompt = `## 📋 AI 생성 프로젝트 개발 요청 명세서
+
 너는 사용자의 기획안을 바탕으로 고품질의 완성형 코드를 바로 작성해 주는 시니어 AI 코딩 전문가이다. 아래의 구체적인 가이드와 기술 요구사항, 비주얼 가이드를 철저히 준수하여 하나의 완성된 독립 실행 파일(또는 단일 컴포넌트 통합 코드)로 코드를 완성해 줘.
 
 ---
 
 ### 1. 전문가 Persona (Role Setting)
 - **역할 및 품질**: ${role}
+
 - **목표**: 어설픈 자리표시자(Placeholder)나 생략 없이, 코드만 복사해서 붙여넣어도 브라우저에서 환상적인 비주얼과 로직으로 완벽하게 동작해야 해.
+
+---
 
 ### 2. 기술 스택 (Tech Stack)
 - **기반 프레임워크**: ${techStack}
+
 - **에셋 제약 사항**: 외부 이미지 URL이나 리소스 다운로드 없이 브라우저 내에서 완벽하게 표시되도록, 디자인 그래픽/가구/오브젝트 등은 **정교하게 작성된 인라인 SVG 코드**를 사용해 리액트/웹 컴포넌트로 직접 구현해 줘.
+
+---
 
 ### 3. 시각적 스타일 및 UI/UX (Aesthetic)
 - **컨셉 및 테마**: ${aestheticStyle}
+
 - **컬러 팔레트**: ${colorPalette}
+
 - **인터랙션 및 애니메이션**: ${interactions}
 
+---
+
 ### 4. 핵심 데이터 흐름 및 기능 요구사항 (Functionality)
-${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.trim()}`).join("\n")}
+${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.trim()}`).join("\n\n")}
+
+---
 
 ### 5. 레이아웃 구조 설계 (Layout)
 - **레이아웃**: ${layout}
-- **반응형 웹 지원**: 데스크톱 해상도에서는 위에 지정된 다단 그리드 구조로 보기 좋게 균형을 잡고, 태블릿 및 모바일 기기 크기에서는 모든 컴포넌트가 세로로 자연스럽게 정렬되는 모바일 퍼스트 반응형 레이아웃을 보장해 줘.
+
+- **반응형 웹 지원**: 데스크톱 해상도에서는 위에 지정된 다단 그리드 구조로 보기 좋게 균형을 잡고, 모든 모바일 기기 크기에서는 모든 컴포넌트가 세로로 자연스럽게 정렬되는 모바일 퍼스트 반응형 레이아웃을 보장해 줘.
 
 ---
 
 ### 💡 코딩 및 출력 지침
 1. **생략 금지**: \`// ... 기존 코드와 동일 ...\` 같은 방식으로 코드를 생략하거나 요약하지 말고, 전체 코드를 온전히 한 번에 복사할 수 있게 처음부터 끝까지 마크다운 코드 블록으로 출력해 줘.
+
 2. **더미 데이터**: 앱이 시작되었을 때 밋밋하지 않도록, LocalStorage에 데이터가 없을 때 로드할 **예쁘고 매력적인 기본 Mock 데이터**를 최소 3~5개 탑재해 줘.
+
 3. **사용성**: 사용자가 직관적으로 조작할 수 있도록 안내 툴팁이나 인터랙티브 반응을 시각적으로 강하게 표현해 줘.`;
 
   const handleCopy = async () => {
@@ -159,18 +175,18 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
       <Header onOpenSettings={() => setIsSettingsOpen(true)} />
 
       {/* Main Container */}
-      <main className="flex-grow mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+      <main className="flex-grow mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8 space-y-12">
         
-        {/* Intro Hero */}
-        <section className="space-y-3 max-w-3xl">
+        {/* Intro Hero - Centered and Spaced */}
+        <section className="space-y-4 max-w-3xl mx-auto text-center flex flex-col items-center py-4">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 px-3 py-1 text-xs text-amber-400 font-semibold">
             <Sparkles className="h-3.5 w-3.5" />
             <span>AI Vibe-Coding Prompt System</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-amber-300 via-violet-300 to-indigo-200 bg-clip-text text-transparent">
+          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-amber-300 via-violet-300 to-indigo-200 bg-clip-text text-transparent leading-tight">
             AI 프로젝트 특급 바이브 코딩 프롬프트 생성기
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-2xl">
+          <p className="text-xs sm:text-base text-slate-400 leading-relaxed max-w-2xl mt-1">
             AI 프로젝트 특급 과정에서 매일 새로운 미니앱을 코딩할 때, 프롬프트 작성 지침 5대 규칙
             (역할 설정, 기술 스택, 시각 스타일, 핵심 로직, 레이아웃)에 맞추어 고품질 완성형 웹앱 코드를
             단번에 받아내는 최적화 프롬프트를 빌드합니다.
@@ -178,31 +194,31 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
         </section>
 
         {/* Preset Selector */}
-        <section className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4 sm:p-6 space-y-4">
+        <section className="bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 sm:p-8 space-y-6">
           <div className="flex items-center gap-2">
             <BookOpen className="h-4.5 w-4.5 text-amber-400" />
             <h2 className="text-sm sm:text-base font-bold text-white">원클릭 프리셋 불러오기</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {PRESETS.map((preset, idx) => (
               <button
                 key={idx}
                 onClick={() => applyPreset(idx)}
-                className={`text-left p-4 rounded-xl border transition duration-200 flex flex-col justify-between ${
+                className={`text-left p-5 rounded-xl border transition duration-200 flex flex-col justify-between min-h-[160px] ${
                   selectedPresetIndex === idx
                     ? "bg-amber-500/10 border-amber-500/40 shadow-lg shadow-amber-500/5 text-white"
                     : "bg-white/[0.01] border-white/[0.06] hover:bg-white/[0.03] text-slate-400 hover:text-slate-200"
                 }`}
               >
                 <div>
-                  <h3 className={`text-xs font-bold ${selectedPresetIndex === idx ? "text-amber-300" : "text-slate-300"}`}>
+                  <h3 className={`text-xs font-bold tracking-tight ${selectedPresetIndex === idx ? "text-amber-300" : "text-slate-300"}`}>
                     {preset.name}
                   </h3>
-                  <p className="mt-1.5 text-[11px] text-slate-500 leading-relaxed line-clamp-3">
+                  <p className="mt-2.5 text-[11px] text-slate-500 leading-relaxed line-clamp-3">
                     {preset.description}
                   </p>
                 </div>
-                <div className="mt-3 flex items-center text-[10px] font-bold text-amber-400/80 gap-1 self-end">
+                <div className="mt-4 flex items-center text-[10px] font-bold text-amber-400/80 gap-1 self-end">
                   <span>불러오기</span>
                   <ChevronRight className="h-3 w-3" />
                 </div>
@@ -212,30 +228,30 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
         </section>
 
         {/* Builder Workspace: Left Form, Right Preview */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
           {/* Left: Input Form (5 Column) */}
-          <div className="lg:col-span-5 space-y-5 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-5 sm:p-6">
-            <h2 className="text-sm font-bold text-white border-b border-white/[0.06] pb-3 flex items-center gap-2">
+          <div className="lg:col-span-5 space-y-6 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 sm:p-8">
+            <h2 className="text-sm font-bold text-white border-b border-white/[0.06] pb-4 flex items-center gap-2">
               <Layers className="h-4 w-4 text-violet-400" />
               <span>프롬프트 빌더 폼</span>
             </h2>
 
-            <div className="space-y-4 text-xs">
+            <div className="space-y-6 text-xs">
               {/* App Name */}
-              <div className="space-y-1.5">
+              <div className="space-y-2.5">
                 <label className="block text-slate-300 font-bold">1. 앱 이름 및 핵심 주제 (App Name)</label>
                 <input
                   type="text"
                   value={appName}
                   onChange={(e) => setAppName(e.target.value)}
-                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2 text-white placeholder-slate-600 focus:outline-none focus:border-amber-500/50 transition"
+                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white placeholder-slate-600 focus:outline-none focus:border-amber-500/50 transition"
                   placeholder="예: 아늑한 방 꾸미기 루틴 트래커"
                 />
               </div>
 
               {/* Persona (Role Setting) */}
-              <div className="space-y-1.5">
+              <div className="space-y-2.5">
                 <label className="block text-slate-300 font-bold flex items-center gap-1.5">
                   <UserCheck className="h-3.5 w-3.5 text-violet-400" />
                   <span>2. 전문가 페르소나 (Role Setting)</span>
@@ -244,12 +260,12 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
                   value={role}
                   rows={2}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500/50 transition resize-none leading-relaxed"
+                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-amber-500/50 transition resize-none leading-relaxed"
                 />
               </div>
 
               {/* Tech Stack */}
-              <div className="space-y-1.5">
+              <div className="space-y-2.5">
                 <label className="block text-slate-300 font-bold flex items-center gap-1.5">
                   <Cpu className="h-3.5 w-3.5 text-violet-400" />
                   <span>3. 기술 스택 지정 (Tech Stack)</span>
@@ -258,62 +274,62 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
                   value={techStack}
                   rows={2}
                   onChange={(e) => setTechStack(e.target.value)}
-                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500/50 transition resize-none leading-relaxed"
+                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-amber-500/50 transition resize-none leading-relaxed"
                 />
               </div>
 
               {/* Aesthetic Style & Palette */}
-              <div className="space-y-3 border-t border-white/[0.04] pt-3">
+              <div className="space-y-4 border-t border-white/[0.04] pt-4">
                 <div className="flex items-center gap-1.5 text-slate-300 font-bold">
                   <Palette className="h-3.5 w-3.5 text-violet-400" />
                   <span>4. 시각적 스타일 키워드 (Aesthetic)</span>
                 </div>
                 
-                <div className="space-y-1.5 pl-1">
+                <div className="space-y-2 pl-1">
                   <label className="block text-slate-400 text-[11px]">스타일 스타일링 무드</label>
                   <input
                     type="text"
                     value={aestheticStyle}
                     onChange={(e) => setAestheticStyle(e.target.value)}
-                    className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500/50 transition"
+                    className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-amber-500/50 transition"
                   />
                 </div>
 
-                <div className="space-y-1.5 pl-1">
+                <div className="space-y-2 pl-1">
                   <label className="block text-slate-400 text-[11px]">사용할 컬러 팔레트</label>
                   <input
                     type="text"
                     value={colorPalette}
                     onChange={(e) => setColorPalette(e.target.value)}
-                    className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500/50 transition"
+                    className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-amber-500/50 transition"
                   />
                 </div>
 
-                <div className="space-y-1.5 pl-1">
+                <div className="space-y-2 pl-1">
                   <label className="block text-slate-400 text-[11px]">인터랙션 및 트랜지션 효과</label>
                   <input
                     type="text"
                     value={interactions}
                     onChange={(e) => setInteractions(e.target.value)}
-                    className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500/50 transition"
+                    className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-amber-500/50 transition"
                   />
                 </div>
               </div>
 
               {/* Functionality details */}
-              <div className="space-y-1.5 border-t border-white/[0.04] pt-3">
+              <div className="space-y-2.5 border-t border-white/[0.04] pt-4">
                 <label className="block text-slate-300 font-bold">5. 핵심 기능 및 데이터 흐름 (Functionality)</label>
                 <p className="text-[10px] text-slate-500 mb-1.5">줄바꿈(Enter) 기준으로 각각의 개별 기능 명세 목록이 작성됩니다.</p>
                 <textarea
                   value={functionality}
                   rows={4}
                   onChange={(e) => setFunctionality(e.target.value)}
-                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500/50 transition leading-relaxed"
+                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-amber-500/50 transition leading-relaxed"
                 />
               </div>
 
               {/* Layout structure */}
-              <div className="space-y-1.5 border-t border-white/[0.04] pt-3">
+              <div className="space-y-2.5 border-t border-white/[0.04] pt-4">
                 <label className="block text-slate-300 font-bold flex items-center gap-1.5">
                   <LayoutTemplate className="h-3.5 w-3.5 text-violet-400" />
                   <span>6. 레이아웃 구조 지정 (Layout)</span>
@@ -322,16 +338,16 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
                   value={layout}
                   rows={2}
                   onChange={(e) => setLayout(e.target.value)}
-                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-amber-500/50 transition resize-none leading-relaxed"
+                  className="w-full bg-[#0d121f] border border-white/[0.08] rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-amber-500/50 transition resize-none leading-relaxed"
                 />
               </div>
             </div>
 
             {/* Reset Button */}
-            <div className="pt-3 border-t border-white/[0.06] flex justify-end">
+            <div className="pt-4 border-t border-white/[0.06] flex justify-end">
               <button
                 onClick={() => applyPreset(selectedPresetIndex)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.02] text-xs font-semibold text-slate-300 hover:bg-white/[0.06] transition"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.02] text-xs font-semibold text-slate-300 hover:bg-white/[0.06] transition"
               >
                 <RefreshCw className="h-3.5 w-3.5" />
                 <span>현재 프리셋 기본값 복원</span>
@@ -340,7 +356,7 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
           </div>
 
           {/* Right: Prompt Output Preview (7 Column) */}
-          <div className="lg:col-span-7 flex flex-col h-full space-y-4">
+          <div className="lg:col-span-7 flex flex-col h-full space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -348,7 +364,7 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
               </div>
               <button
                 onClick={handleCopy}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold tracking-wide transition duration-200 ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold tracking-wide transition duration-200 ${
                   copied 
                     ? "bg-emerald-500 text-white shadow-lg shadow-emerald-500/10" 
                     : "bg-amber-400 text-[#080a10] hover:bg-amber-300 active:scale-95 shadow-lg shadow-amber-400/5"
@@ -368,21 +384,21 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
               </button>
             </div>
 
-            {/* Prompt Render Display */}
-            <div className="bg-[#0b0f19] border border-white/[0.06] rounded-2xl p-6 flex-grow min-h-[480px] font-mono text-xs text-slate-300 whitespace-pre-wrap leading-relaxed select-all overflow-y-auto max-h-[620px] shadow-inner relative">
-              <div className="absolute top-2 right-3 text-[9px] font-bold text-slate-500 select-none bg-white/[0.02] px-2 py-0.5 rounded border border-white/[0.04]">
+            {/* Prompt Render Display - Larger size and looser line height */}
+            <div className="bg-[#0b0f19] border border-white/[0.06] rounded-2xl p-8 sm:p-10 flex-grow min-h-[500px] font-mono text-[13px] text-slate-300 whitespace-pre-wrap leading-loose select-all overflow-y-auto max-h-[660px] shadow-inner relative">
+              <div className="absolute top-3 right-4 text-[9px] font-bold text-slate-500 select-none bg-white/[0.02] px-2 py-0.5 rounded border border-white/[0.04]">
                 마크다운 형식
               </div>
               {generatedPrompt}
             </div>
 
             {/* Quick Vibe Coding Guide */}
-            <div className="rounded-xl bg-violet-500/5 border border-violet-500/10 p-4 space-y-2">
+            <div className="rounded-xl bg-violet-500/5 border border-violet-500/10 p-5 space-y-3">
               <h3 className="text-xs font-bold text-violet-400 flex items-center gap-1.5">
                 <Sparkles className="h-4 w-4" />
                 <span>어떻게 사용하나요?</span>
               </h3>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
+              <p className="text-[11px] text-slate-400 leading-relaxed space-y-1.5">
                 1. 상단의 <strong>[프롬프트 복사하기]</strong>를 클릭해 전체 템플릿을 클립보드에 담습니다.<br />
                 2. 즐겨 쓰시는 AI 모델(Claude 3.5 Sonnet, GPT-4o 등)의 대화창에 붙여넣습니다.<br />
                 3. AI가 생성한 완성형 코드를 복사하여 내 프로젝트 파일에 적용하고 바로 실행(vibe-coding)합니다.<br />
