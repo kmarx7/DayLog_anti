@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Settings, Home, Code2 } from "lucide-react";
+import { BookOpen, Settings, Home, Code2, Sparkles } from "lucide-react";
 
 type HeaderProps = {
   onOpenSettings: () => void;
@@ -14,6 +14,7 @@ export default function Header({ onOpenSettings }: HeaderProps) {
 
   const isHome = pathname === "/";
   const isLogs = pathname.startsWith("/logs");
+  const isPromptBuilder = pathname.startsWith("/prompt-generator");
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/[0.06] bg-[#080a10]/80 backdrop-blur-md">
@@ -48,6 +49,21 @@ export default function Header({ onOpenSettings }: HeaderProps) {
               <span className="hidden sm:inline">대시보드</span>
               {isHome && (
                 <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-gradient-to-r from-violet-500 to-emerald-400 rounded-full" />
+              )}
+            </Link>
+
+            <Link
+              href="/prompt-generator"
+              className={`relative flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold tracking-wide transition duration-200 ${
+                isPromptBuilder 
+                  ? "text-white bg-white/[0.04]" 
+                  : "text-slate-400 hover:bg-white/[0.02] hover:text-white"
+              }`}
+            >
+              <Sparkles className="h-4.5 w-4.5 shrink-0 text-amber-400" />
+              <span className="hidden sm:inline">프롬프트 생성기</span>
+              {isPromptBuilder && (
+                <span className="absolute bottom-0 left-3 right-3 h-[2px] bg-gradient-to-r from-amber-400 to-violet-500 rounded-full" />
               )}
             </Link>
             
