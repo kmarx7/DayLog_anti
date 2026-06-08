@@ -1,0 +1,19 @@
+{
+  "theme_color": "#080a10",
+  "background_color": "#080a10",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "AI Project Logbook",
+  "short_name": "AI Logbook",
+  "description": "GitHub 주소와 배포 URL만 넣으면 자동으로 기록을 생성해주는 AI 프로젝트 자동 로그북",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

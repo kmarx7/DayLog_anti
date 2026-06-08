@@ -15,6 +15,12 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "AI Project Logbook - AI 프로젝트 자동 로그북",
   description: "GitHub 주소와 배포 URL만 넣으면 오늘 만든 프로젝트가 자동으로 기록되고 포트폴리오 카드로 보관되는 AI 프로젝트 자동 로그북입니다.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "AI Logbook",
+  },
 };
 
 export default function RootLayout({
