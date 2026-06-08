@@ -9,7 +9,7 @@ import { ProjectLog } from "@/types";
 import { getProjectLogById, updateProjectLog, deleteProjectLog } from "@/lib/storage";
 import { 
   ArrowLeft, Globe, Calendar, Edit3, Save, Copy, 
-  Trash2, BookOpen, Check, Layers, Cpu, Award, RefreshCw, X 
+  Trash2, BookOpen, Check, Layers, Cpu, X 
 } from "lucide-react";
 import Github from "@/components/GithubIcon";
 
@@ -21,7 +21,7 @@ export default function LogDetailPage() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [log, setLog] = useState<ProjectLog | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [copiedType, setCopiedType] = useState<"text" | "markdown" | null>(null);
+  const [copiedType, setCopiedType] = useState<"markdown" | null>(null);
 
   // Toast states
   const [toastMsg, setToastMsg] = useState("");
@@ -30,39 +30,24 @@ export default function LogDetailPage() {
   // Edit fields state
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
-  const [purpose, setPurpose] = useState("");
+  const [userMemo, setUserMemo] = useState("");
   const [techStackInput, setTechStackInput] = useState("");
   const [featuresInput, setFeaturesInput] = useState("");
-  const [implementationSummary, setImplementationSummary] = useState("");
-  const [learned, setLearned] = useState("");
-  const [difficulties, setDifficulties] = useState("");
+  const [uxUiAnalysis, setUxUiAnalysis] = useState("");
   const [improvements, setImprovements] = useState("");
-  const [portfolioDescription, setPortfolioDescription] = useState("");
-  const [assignmentSummary, setAssignmentSummary] = useState("");
-  const [readmeSummary, setReadmeSummary] = useState("");
-  const [commitSummary, setCommitSummary] = useState("");
-  const [deployAnalysis, setDeployAnalysis] = useState("");
 
   useEffect(() => {
     if (id) {
       const data = getProjectLogById(id);
       if (data) {
         setLog(data);
-        // Bind fields
         setTitle(data.title);
         setSummary(data.summary);
-        setPurpose(data.purpose);
+        setUserMemo(data.userMemo || "");
         setTechStackInput(data.techStack.join(", "));
         setFeaturesInput(data.features.join("\n"));
-        setImplementationSummary(data.implementationSummary);
-        setLearned(data.learned);
-        setDifficulties(data.difficulties);
+        setUxUiAnalysis(data.uxUiAnalysis || "");
         setImprovements(data.improvements);
-        setPortfolioDescription(data.portfolioDescription);
-        setAssignmentSummary(data.assignmentSummary);
-        setReadmeSummary(data.readmeSummary || "");
-        setCommitSummary(data.commitSummary || "");
-        setDeployAnalysis(data.deployAnalysis || "");
       }
     }
   }, [id]);
@@ -72,7 +57,7 @@ export default function LogDetailPage() {
       <div className="min-h-screen flex flex-col bg-[#080a10]">
         <Header onOpenSettings={() => setIsSettingsOpen(true)} />
         <div className="flex-grow flex flex-col items-center justify-center text-center p-8">
-          <p className="text-slate-400">해당 프로젝트 로그를 찾을 수 없습니다.</p>
+          <p className="text-slate-400">기록된 앱 정보를 찾을 수 없습니다.</p>
           <button
             onClick={() => router.push("/logs")}
             className="mt-4 flex items-center gap-1 text-xs font-bold text-violet-400"
@@ -93,29 +78,22 @@ export default function LogDetailPage() {
       ...log,
       title,
       summary,
-      purpose,
+      userMemo,
       techStack: finalTech,
       features: finalFeatures,
-      implementationSummary,
-      learned,
-      difficulties,
+      uxUiAnalysis,
       improvements,
-      portfolioDescription,
-      assignmentSummary,
-      readmeSummary,
-      commitSummary,
-      deployAnalysis,
     };
 
     const saved = updateProjectLog(updated);
     setLog(saved);
     setIsEditing(false);
-    setToastMsg("프로젝트 기록 수정 사항이 성공적으로 저장되었습니다.");
+    setToastMsg("앱 정보 수정 사항이 성공적으로 저장되었습니다.");
     setToastOpen(true);
   };
 
   const handleDelete = () => {
-    if (confirm("정말로 이 프로젝트 로그를 완전히 삭제하시겠습니까?")) {
+    if (confirm("정말로 이 기록을 보관함에서 삭제하시겠습니까?")) {
       deleteProjectLog(log.id);
       router.push("/logs");
     }
@@ -123,49 +101,33 @@ export default function LogDetailPage() {
 
   const handleCopyMarkdown = () => {
     const markdown = `
-# 📝 ${title}
+# 📱 ${title}
 > **${summary}**
 
-- **GitHub Repository**: [코드 보러가기](${log.githubUrl})
+- **GitHub Repository**: [코드 저장소](${log.githubUrl})
 - **Deploy URL**: [실배포 페이지](${log.deployUrl})
 - **기록 생성일**: ${log.date}
 
 ---
 
-## 🎯 1. 프로젝트 목적
-${purpose}
-
-## 🛠️ 2. 기술 스택
+## 🛠️ 1. 사용 기술 스택
 ${techStackInput.split(",").map((t) => `\`${t.trim()}\``).join(" ")}
 
-## 🌟 3. 주요 구현 기능
+## 🌟 2. 주요 구현 기능
 ${featuresInput.split("\n").map((f) => `- ${f.trim()}`).join("\n")}
-
-## 🚀 4. 구현 과정 요약
-${implementationSummary}
 
 ---
 
-## 🧠 5. 배움과 성장
-### ✏️ 오늘 배운 점
-${learned}
+## 🎨 3. UX/UI 분석 & 피드백
+${uxUiAnalysis || "분석 내용 없음."}
 
-### ⚠️ 어려웠던 점
-${difficulties}
-
-### 💡 개선할 점
+## 💡 4. 향후 개선 및 보완할 점
 ${improvements}
 
 ---
 
-## 💼 6. 제출 및 포트폴리오 요약
-### 📁 포트폴리오 카드 설명
-\`\`\`text
-${portfolioDescription}
-\`\`\`
-
-### 🎓 과제 제출용 요약
-> ${assignmentSummary}
+## ✏️ 5. 오늘의 메모
+> ${userMemo || "기록된 한 줄 소감이 없습니다."}
     `.trim();
 
     navigator.clipboard.writeText(markdown);
@@ -175,6 +137,19 @@ ${portfolioDescription}
     setTimeout(() => setCopiedType(null), 2000);
   };
 
+  const getTechBadgeStyle = (tech: string) => {
+    const t = tech.toLowerCase().trim();
+    if (t === "react") return "bg-sky-500/10 border-sky-500/20 text-sky-450";
+    if (t === "next.js" || t === "next") return "bg-black border-white/20 text-white";
+    if (t === "typescript" || t === "ts") return "bg-blue-500/10 border-blue-500/20 text-blue-400";
+    if (t === "tailwindcss" || t === "tailwind") return "bg-teal-500/10 border-teal-500/20 text-teal-400";
+    if (t === "firebase") return "bg-amber-500/10 border-amber-500/20 text-amber-500";
+    if (t === "supabase") return "bg-emerald-500/10 border-emerald-500/20 text-emerald-450";
+    if (t === "javascript" || t === "js") return "bg-yellow-500/10 border-yellow-500/20 text-yellow-500";
+    if (t === "node.js" || t === "node") return "bg-green-500/10 border-green-500/20 text-green-400";
+    return "bg-white/[0.03] border-white/[0.06] text-slate-350";
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-[#080a10]">
       {/* Header */}
@@ -182,7 +157,8 @@ ${portfolioDescription}
 
       {/* Main Container */}
       <main className="flex-grow mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-6">
-        {/* Navigation / Actions Header */}
+        
+        {/* Navigation Action Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.06] pb-5">
           <button
             onClick={() => router.push("/logs")}
@@ -195,7 +171,7 @@ ${portfolioDescription}
           <div className="flex flex-wrap items-center gap-2">
             <button
               onClick={handleCopyMarkdown}
-              className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.02] px-3.5 py-2 text-xs font-semibold text-slate-300 hover:bg-white/[0.06] hover:text-white transition"
+              className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.02] px-3.5 py-2 text-xs font-semibold text-slate-350 hover:bg-white/[0.06] hover:text-white transition"
             >
               {copiedType === "markdown" ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4" />}
               <span>Markdown 복사</span>
@@ -223,15 +199,15 @@ ${portfolioDescription}
 
             <button
               onClick={handleDelete}
-              className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 px-3.5 py-2 text-xs font-semibold text-red-400 hover:bg-red-500/10 hover:text-red-300 transition"
+              className="flex items-center gap-1.5 rounded-lg border border-red-500/20 bg-red-500/5 px-3.5 py-2 text-xs font-semibold text-red-400 hover:bg-red-500/10 hover:text-red-350 transition"
             >
               <Trash2 className="h-4 w-4" />
-              <span>로그 삭제</span>
+              <span>기록 삭제</span>
             </button>
           </div>
         </div>
 
-        {/* Project Header Info */}
+        {/* Dynamic App Header Panel */}
         <section className="rounded-2xl border border-white/[0.08] bg-[#0c101b]/50 p-6 md:p-8 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             {isEditing ? (
@@ -239,7 +215,7 @@ ${portfolioDescription}
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="text-xl sm:text-2xl font-extrabold text-white bg-white/[0.02] border border-white/[0.08] rounded-xl px-3 py-1.5 focus:border-violet-500 focus:outline-none w-full max-w-xl"
+                className="text-xl font-extrabold text-white bg-white/[0.01] border border-white/[0.08] rounded-xl px-3 py-1.5 focus:border-violet-500 focus:outline-none w-full max-w-xl"
               />
             ) : (
               <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
@@ -258,7 +234,7 @@ ${portfolioDescription}
               type="text"
               value={summary}
               onChange={(e) => setSummary(e.target.value)}
-              className="text-sm text-slate-300 bg-white/[0.02] border border-white/[0.08] rounded-xl px-3 py-1.5 focus:border-violet-500 focus:outline-none w-full"
+              className="text-sm text-slate-350 bg-white/[0.01] border border-white/[0.08] rounded-xl px-3 py-1.5 focus:border-violet-500 focus:outline-none w-full"
             />
           ) : (
             <p className="text-sm text-slate-300 font-medium">
@@ -266,7 +242,7 @@ ${portfolioDescription}
             </p>
           )}
 
-          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 pt-2 border-t border-white/[0.04]">
+          <div className="flex flex-wrap items-center gap-4 text-xs text-slate-450 pt-2 border-t border-white/[0.04]">
             <a
               href={log.githubUrl}
               target="_blank"
@@ -283,33 +259,34 @@ ${portfolioDescription}
               rel="noopener noreferrer"
               className="flex items-center gap-1.5 hover:text-white transition"
             >
-              <Globe className="h-4 w-4 text-emerald-400" />
+              <Globe className="h-4 w-4 text-emerald-450" />
               <span>{log.deployUrl.replace(/^https?:\/\//, "")}</span>
             </a>
           </div>
         </section>
 
-        {/* 4-Section Grid */}
+        {/* 2-Column Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* SECTION 1: 개요 및 기능 */}
+          
+          {/* Column 1: App basic notes and technical specs */}
           <div className="rounded-2xl border border-white/[0.06] bg-[#0c101b]/30 p-6 space-y-4">
             <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-violet-400">
               <Layers className="h-4 w-4" />
-              <span>프로젝트 구성 및 목적</span>
+              <span>앱 기록 및 기술 정보</span>
             </h2>
 
-            {/* Purpose */}
+            {/* User Memo */}
             <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">프로젝트 목적</span>
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">오늘의 한 줄 메모</span>
               {isEditing ? (
                 <textarea
                   rows={2}
-                  value={purpose}
-                  onChange={(e) => setPurpose(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
+                  value={userMemo}
+                  onChange={(e) => setUserMemo(e.target.value)}
+                  className="w-full text-xs text-white bg-white/[0.01] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500 resize-none"
                 />
               ) : (
-                <p className="text-xs text-slate-350 leading-relaxed whitespace-pre-wrap">{purpose}</p>
+                <p className="text-xs text-slate-350 leading-relaxed italic">&quot;{userMemo || "작성된 소감이 없습니다."}&quot;</p>
               )}
             </div>
 
@@ -321,12 +298,12 @@ ${portfolioDescription}
                   type="text"
                   value={techStackInput}
                   onChange={(e) => setTechStackInput(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
+                  className="w-full text-xs text-white bg-white/[0.01] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
                 />
               ) : (
                 <div className="flex flex-wrap gap-1.5">
                   {log.techStack.map((tech, i) => (
-                    <span key={i} className="rounded bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 text-[10px] text-violet-400">
+                    <span key={i} className={`rounded border px-2 py-0.5 text-[10px] font-medium ${getTechBadgeStyle(tech)}`}>
                       {tech}
                     </span>
                   ))}
@@ -336,13 +313,13 @@ ${portfolioDescription}
 
             {/* Features */}
             <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">핵심 구현 기능</span>
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">주요 기능 명세</span>
               {isEditing ? (
                 <textarea
                   rows={3}
                   value={featuresInput}
                   onChange={(e) => setFeaturesInput(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
+                  className="w-full text-xs text-white bg-white/[0.01] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500 resize-none"
                 />
               ) : (
                 <ul className="list-inside list-disc space-y-1 text-xs text-slate-350">
@@ -354,67 +331,37 @@ ${portfolioDescription}
             </div>
           </div>
 
-          {/* SECTION 2: 개발 저널 */}
+          {/* Column 2: UX/UI Analysis & Improvements */}
           <div className="rounded-2xl border border-white/[0.06] bg-[#0c101b]/30 p-6 space-y-4">
-            <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-violet-400">
+            <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-450">
               <Cpu className="h-4 w-4" />
-              <span>개발 과정 및 성장 기록</span>
+              <span>UX/UI 피드백 및 개선안</span>
             </h2>
 
-            {/* Implementation Summary */}
+            {/* UX/UI Analysis */}
             <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">구현 과정 요약</span>
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">UX/UI 관련 분석</span>
               {isEditing ? (
                 <textarea
-                  rows={2}
-                  value={implementationSummary}
-                  onChange={(e) => setImplementationSummary(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
+                  rows={4}
+                  value={uxUiAnalysis}
+                  onChange={(e) => setUxUiAnalysis(e.target.value)}
+                  className="w-full text-xs text-white bg-white/[0.01] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500 resize-none"
                 />
               ) : (
-                <p className="text-xs text-slate-350 leading-relaxed whitespace-pre-wrap">{implementationSummary}</p>
-              )}
-            </div>
-
-            {/* Learned */}
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">오늘 배운 점</span>
-              {isEditing ? (
-                <textarea
-                  rows={2}
-                  value={learned}
-                  onChange={(e) => setLearned(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
-                />
-              ) : (
-                <p className="text-xs text-slate-350 leading-relaxed whitespace-pre-wrap">{learned}</p>
-              )}
-            </div>
-
-            {/* Difficulties */}
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">어려웠던 점</span>
-              {isEditing ? (
-                <textarea
-                  rows={2}
-                  value={difficulties}
-                  onChange={(e) => setDifficulties(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
-                />
-              ) : (
-                <p className="text-xs text-slate-350 leading-relaxed whitespace-pre-wrap">{difficulties}</p>
+                <p className="text-xs text-slate-355 leading-relaxed whitespace-pre-wrap">{uxUiAnalysis || "분석 내용 없음."}</p>
               )}
             </div>
 
             {/* Improvements */}
             <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">개선할 점</span>
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">개선 및 보완할 점</span>
               {isEditing ? (
                 <textarea
-                  rows={2}
+                  rows={3}
                   value={improvements}
                   onChange={(e) => setImprovements(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
+                  className="w-full text-xs text-white bg-white/[0.01] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500 resize-none"
                 />
               ) : (
                 <p className="text-xs text-slate-350 leading-relaxed whitespace-pre-wrap">{improvements}</p>
@@ -422,96 +369,6 @@ ${portfolioDescription}
             </div>
           </div>
 
-          {/* SECTION 3: 과제 제출 및 포트폴리오 */}
-          <div className="rounded-2xl border border-white/[0.06] bg-[#0c101b]/30 p-6 space-y-4">
-            <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-violet-400">
-              <Award className="h-4 w-4" />
-              <span>포트폴리오 & 과제 제출</span>
-            </h2>
-
-            {/* Portfolio description */}
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">포트폴리오 설명</span>
-              {isEditing ? (
-                <textarea
-                  rows={4}
-                  value={portfolioDescription}
-                  onChange={(e) => setPortfolioDescription(e.target.value)}
-                  className="w-full text-xs font-mono text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
-                />
-              ) : (
-                <pre className="text-[10px] text-slate-300 font-mono leading-relaxed bg-white/[0.02] border border-white/[0.04] p-3 rounded-xl whitespace-pre-wrap">{portfolioDescription}</pre>
-              )}
-            </div>
-
-            {/* Assignment summary */}
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">과제 제출용 요약</span>
-              {isEditing ? (
-                <textarea
-                  rows={3}
-                  value={assignmentSummary}
-                  onChange={(e) => setAssignmentSummary(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
-                />
-              ) : (
-                <p className="text-xs text-slate-350 leading-relaxed whitespace-pre-wrap">{assignmentSummary}</p>
-              )}
-            </div>
-          </div>
-
-          {/* SECTION 4: 자동 수집 분석 요약 */}
-          <div className="rounded-2xl border border-white/[0.06] bg-[#0c101b]/30 p-6 space-y-4">
-            <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-violet-400">
-              <BookOpen className="h-4 w-4" />
-              <span>GitHub / Deploy 원본 분석</span>
-            </h2>
-
-            {/* Readme Summary */}
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">README 요약</span>
-              {isEditing ? (
-                <textarea
-                  rows={2}
-                  value={readmeSummary}
-                  onChange={(e) => setReadmeSummary(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
-                />
-              ) : (
-                <p className="text-xs text-slate-350 leading-relaxed">{readmeSummary || "README 데이터 없음."}</p>
-              )}
-            </div>
-
-            {/* Commit Summary */}
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">최근 커밋 이력</span>
-              {isEditing ? (
-                <textarea
-                  rows={2}
-                  value={commitSummary}
-                  onChange={(e) => setCommitSummary(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
-                />
-              ) : (
-                <p className="text-xs text-slate-350 leading-relaxed whitespace-pre-wrap">{commitSummary || "커밋 이력 없음."}</p>
-              )}
-            </div>
-
-            {/* Deploy Analysis */}
-            <div className="space-y-1.5">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">배포 페이지 구조 분석</span>
-              {isEditing ? (
-                <textarea
-                  rows={2}
-                  value={deployAnalysis}
-                  onChange={(e) => setDeployAnalysis(e.target.value)}
-                  className="w-full text-xs text-white bg-white/[0.02] border border-white/[0.08] rounded-xl p-2.5 focus:outline-none focus:border-violet-500"
-                />
-              ) : (
-                <p className="text-xs text-slate-350 leading-relaxed">{deployAnalysis || "배포 페이지 크롤링 정보 없음."}</p>
-              )}
-            </div>
-          </div>
         </div>
       </main>
 

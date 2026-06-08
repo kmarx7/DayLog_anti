@@ -7,19 +7,12 @@ export type ProjectLog = {
   userMemo?: string;
 
   summary: string;
-  purpose: string;
   techStack: string[];
   features: string[];
-  implementationSummary: string;
-  learned: string;
-  difficulties: string;
+  
+  // Developer Essentials (UI/UX focus)
+  uxUiAnalysis?: string;
   improvements: string;
-  portfolioDescription: string;
-  assignmentSummary: string;
-
-  readmeSummary?: string;
-  commitSummary?: string;
-  deployAnalysis?: string;
 
   githubMeta?: {
     repoName: string;

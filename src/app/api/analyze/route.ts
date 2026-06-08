@@ -291,19 +291,10 @@ export async function POST(req: NextRequest) {
     const logResult = {
       title: analysisResult.title || githubMeta.repoName,
       summary: analysisResult.summary || "",
-      purpose: analysisResult.purpose || "",
       techStack: analysisResult.techStack || githubMeta.inferredTech || [],
       features: analysisResult.features || [],
-      implementationSummary: analysisResult.implementationSummary || "",
-      learned: analysisResult.learned || "",
-      difficulties: analysisResult.difficulties || "",
+      uxUiAnalysis: analysisResult.uxUiAnalysis || "",
       improvements: analysisResult.improvements || "",
-      portfolioDescription: analysisResult.portfolioDescription || "",
-      assignmentSummary: analysisResult.assignmentSummary || "",
-      
-      readmeSummary: analysisResult.readmeSummary || "",
-      commitSummary: analysisResult.commitSummary || "",
-      deployAnalysis: analysisResult.deployAnalysis || "",
 
       githubMeta: {
         repoName: githubMeta.repoName,
