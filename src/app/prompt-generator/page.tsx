@@ -170,7 +170,7 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#080a10]">
+    <div className="min-h-screen w-full flex flex-col bg-[#080a10]">
       {/* Header */}
       <Header onOpenSettings={() => setIsSettingsOpen(true)} />
 
