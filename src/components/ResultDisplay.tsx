@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from "react";
 import { 
   Save, Copy, FileCode, Trash2, Edit3, Check, Globe, 
-  Layers, BookOpen, GraduationCap, Briefcase, ChevronRight 
+  Layers, BookOpen, GraduationCap, Briefcase, ChevronRight,
+  Cpu, Target, Sparkles, AlertCircle, FileText, Code
 } from "lucide-react";
 import Github from "@/components/GithubIcon";
+import Toast from "@/components/Toast";
 import { ProjectLog } from "@/types";
 
 type ResultDisplayProps = {
@@ -49,12 +51,20 @@ export default function ResultDisplay({ logData, onSave, onCancel }: ResultDispl
   const [copiedType, setCopiedType] = useState<"text" | "markdown" | "json" | null>(null);
   const [showJsonPreview, setShowJsonPreview] = useState(false);
 
+  // Toast states
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastType, setToastType] = useState<"success" | "warning" | "info">("success");
+
   // Temporary state for text-array inputs
   const [techInput, setTechInput] = useState(editedLog.techStack.join(", "));
   const [featuresInput, setFeaturesInput] = useState(editedLog.features.join("\n"));
 
-  const triggerCopyAlert = (type: "text" | "markdown" | "json") => {
+  const triggerCopyAlert = (type: "text" | "markdown" | "json", message: string) => {
     setCopiedType(type);
+    setToastMsg(message);
+    setToastType("success");
+    setToastOpen(true);
     setTimeout(() => setCopiedType(null), 2000);
   };
 
@@ -83,7 +93,7 @@ ${editedLog.improvements}
     `.trim();
 
     navigator.clipboard.writeText(text);
-    triggerCopyAlert("text");
+    triggerCopyAlert("text", "프로젝트 핵심 요약본이 클립보드에 복사되었습니다.");
   };
 
   const handleCopyMarkdown = () => {
@@ -134,12 +144,12 @@ ${editedLog.portfolioDescription}
     `.trim();
 
     navigator.clipboard.writeText(markdown);
-    triggerCopyAlert("markdown");
+    triggerCopyAlert("markdown", "README 마크다운 템플릿이 클립보드에 복사되었습니다.");
   };
 
   const handleCopyJson = () => {
     navigator.clipboard.writeText(JSON.stringify(editedLog, null, 2));
-    triggerCopyAlert("json");
+    triggerCopyAlert("json", "프로젝트 로그 JSON 데이터가 클립보드에 복사되었습니다.");
   };
 
   const handleSave = () => {
@@ -265,7 +275,7 @@ ${editedLog.portfolioDescription}
         <div className="lg:col-span-3 rounded-2xl border border-white/[0.08] bg-[#0c101b]/50 p-6 md:p-8 space-y-6">
           {/* TAB 1: BASIC INFORMATION */}
           {activeTab === "basic" && (
-            <div className="space-y-5">
+            <div className="space-y-5 animate-slideUp">
               {/* Project Title */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-400">프로젝트명</label>
@@ -373,7 +383,7 @@ ${editedLog.portfolioDescription}
 
           {/* TAB 2: JOURNEY & LEARNINGS */}
           {activeTab === "journey" && (
-            <div className="space-y-5">
+            <div className="space-y-5 animate-slideUp">
               {/* Implementation Summary */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-400">구현 과정 요약</label>
@@ -438,7 +448,7 @@ ${editedLog.portfolioDescription}
 
           {/* TAB 3: EXPORTS & SUMMARIES */}
           {activeTab === "export" && (
-            <div className="space-y-5 animate-fadeIn">
+            <div className="space-y-5 animate-slideUp">
               {/* Portfolio Description */}
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
@@ -475,7 +485,7 @@ ${editedLog.portfolioDescription}
 
           {/* TAB 4: SCRAPED RAW METADATA */}
           {activeTab === "meta" && (
-            <div className="space-y-5 animate-fadeIn">
+            <div className="space-y-5 animate-slideUp">
               {/* Readme Summary */}
               <div className="space-y-1.5">
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-400">README 요약</label>
@@ -604,6 +614,12 @@ ${editedLog.portfolioDescription}
           </div>
         </div>
       )}
+      <Toast 
+        message={toastMsg} 
+        isOpen={toastOpen} 
+        onClose={() => setToastOpen(false)} 
+        type={toastType} 
+      />
     </div>
   );
 }

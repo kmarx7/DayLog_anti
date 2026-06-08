@@ -4,11 +4,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import SettingsModal from "@/components/SettingsModal";
+import Toast from "@/components/Toast";
 import { ProjectLog } from "@/types";
 import { getProjectLogById, updateProjectLog, deleteProjectLog } from "@/lib/storage";
 import { 
   ArrowLeft, Globe, Calendar, Edit3, Save, Copy, 
-  Trash2, BookOpen, Check, Layers, Cpu, Award, RefreshCw 
+  Trash2, BookOpen, Check, Layers, Cpu, Award, RefreshCw, X 
 } from "lucide-react";
 import Github from "@/components/GithubIcon";
 
@@ -21,6 +22,10 @@ export default function LogDetailPage() {
   const [log, setLog] = useState<ProjectLog | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [copiedType, setCopiedType] = useState<"text" | "markdown" | null>(null);
+
+  // Toast states
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastOpen, setToastOpen] = useState(false);
 
   // Edit fields state
   const [title, setTitle] = useState("");
@@ -105,6 +110,8 @@ export default function LogDetailPage() {
     const saved = updateProjectLog(updated);
     setLog(saved);
     setIsEditing(false);
+    setToastMsg("프로젝트 기록 수정 사항이 성공적으로 저장되었습니다.");
+    setToastOpen(true);
   };
 
   const handleDelete = () => {
@@ -163,6 +170,8 @@ ${portfolioDescription}
 
     navigator.clipboard.writeText(markdown);
     setCopiedType("markdown");
+    setToastMsg("README 마크다운 템플릿이 클립보드에 복사되었습니다.");
+    setToastOpen(true);
     setTimeout(() => setCopiedType(null), 2000);
   };
 
@@ -515,6 +524,13 @@ ${portfolioDescription}
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+      />
+
+      {/* Toast */}
+      <Toast 
+        message={toastMsg} 
+        isOpen={toastOpen} 
+        onClose={() => setToastOpen(false)} 
       />
     </div>
   );

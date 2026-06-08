@@ -4,15 +4,20 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import SettingsModal from "@/components/SettingsModal";
 import LogCard from "@/components/LogCard";
+import Toast from "@/components/Toast";
 import { ProjectLog } from "@/types";
 import { getProjectLogs, deleteProjectLog } from "@/lib/storage";
-import { BookOpen, Search, Filter, RefreshCw } from "lucide-react";
+import { BookOpen, Search, Filter, RefreshCw, X } from "lucide-react";
 
 export default function LogsPage() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [logs, setLogs] = useState<ProjectLog[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
+  
+  // Toast states
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastOpen, setToastOpen] = useState(false);
 
   useEffect(() => {
     setLogs(getProjectLogs());
@@ -24,6 +29,8 @@ export default function LogsPage() {
     if (confirm("정말로 이 프로젝트 기록을 삭제하시겠습니까?")) {
       deleteProjectLog(id);
       setLogs(getProjectLogs());
+      setToastMsg("프로젝트 기록이 보관함에서 정상 삭제되었습니다.");
+      setToastOpen(true);
     }
   };
 
@@ -83,8 +90,17 @@ export default function LogsPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="프로젝트명, 설명, 메모 검색..."
-              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.02] py-2.5 pl-10 pr-4 text-xs text-white placeholder-slate-500 focus:border-violet-500 focus:outline-none transition duration-150"
+              className="w-full rounded-xl border border-white/[0.08] bg-white/[0.02] py-2.5 pl-10 pr-10 text-xs text-white placeholder-slate-500 focus:border-violet-500 focus:outline-none transition duration-150"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3.5 top-3.5 text-slate-500 hover:text-white transition"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
 
           {/* Tech Select */}
@@ -93,7 +109,7 @@ export default function LogsPage() {
             <select
               value={selectedTech || ""}
               onChange={(e) => setSelectedTech(e.target.value || null)}
-              className="w-full appearance-none rounded-xl border border-white/[0.08] bg-[#0c101b] py-2.5 pl-10 pr-8 text-xs text-slate-300 focus:border-violet-500 focus:outline-none transition duration-150"
+              className="w-full appearance-none rounded-xl border border-white/[0.08] bg-[#0c101b] py-2.5 pl-10 pr-8 text-xs text-slate-350 focus:border-violet-500 focus:outline-none transition duration-150"
             >
               <option value="">모든 기술 스택</option>
               {allTechStacks.map((tech) => (
@@ -114,6 +130,31 @@ export default function LogsPage() {
             <span>필터 초기화</span>
           </button>
         </section>
+
+        {/* Active Filters Bar */}
+        {(selectedTech || searchQuery) && (
+          <section className="flex flex-wrap items-center gap-2 bg-white/[0.02] border border-white/[0.04] p-3 rounded-xl animate-fadeIn">
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">적용된 필터:</span>
+            {searchQuery && (
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-violet-500/10 border border-violet-500/20 px-2.5 py-1 text-[10px] text-violet-400 font-bold">
+                검색어: {searchQuery}
+                <button onClick={() => setSearchQuery("")} className="hover:text-white ml-0.5"><X className="h-3 w-3" /></button>
+              </span>
+            )}
+            {selectedTech && (
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 text-[10px] text-emerald-400 font-bold">
+                기술: {selectedTech}
+                <button onClick={() => setSelectedTech(null)} className="hover:text-white ml-0.5"><X className="h-3 w-3" /></button>
+              </span>
+            )}
+            <button
+              onClick={resetFilters}
+              className="text-[10px] text-slate-500 hover:text-slate-350 underline ml-auto pl-2 font-bold"
+            >
+              전체 지우기
+            </button>
+          </section>
+        )}
 
         {/* Logs Grid */}
         <section>
@@ -146,6 +187,13 @@ export default function LogsPage() {
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
+      />
+
+      {/* Toast */}
+      <Toast 
+        message={toastMsg} 
+        isOpen={toastOpen} 
+        onClose={() => setToastOpen(false)} 
       />
     </div>
   );

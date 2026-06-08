@@ -6,6 +6,19 @@ import { Globe, Calendar, ArrowRight, Trash2 } from "lucide-react";
 import Github from "@/components/GithubIcon";
 import { ProjectLog } from "@/types";
 
+const getTechBadgeStyle = (tech: string) => {
+  const t = tech.toLowerCase().trim();
+  if (t === "react") return "bg-sky-500/10 border-sky-500/20 text-sky-450";
+  if (t === "next.js" || t === "next") return "bg-black border-white/20 text-white";
+  if (t === "typescript" || t === "ts") return "bg-blue-500/10 border-blue-500/20 text-blue-400";
+  if (t === "tailwindcss" || t === "tailwind") return "bg-teal-500/10 border-teal-500/20 text-teal-400";
+  if (t === "firebase") return "bg-amber-500/10 border-amber-500/20 text-amber-500";
+  if (t === "supabase") return "bg-emerald-500/10 border-emerald-500/20 text-emerald-450";
+  if (t === "javascript" || t === "js") return "bg-yellow-500/10 border-yellow-500/20 text-yellow-500";
+  if (t === "node.js" || t === "node") return "bg-green-500/10 border-green-500/20 text-green-400";
+  return "bg-white/[0.03] border-white/[0.06] text-slate-350";
+};
+
 type LogCardProps = {
   log: ProjectLog;
   onDelete?: (id: string, e: React.MouseEvent) => void;
@@ -87,7 +100,7 @@ export default function LogCard({ log, onDelete }: LogCardProps) {
           {log.techStack.slice(0, 4).map((tech, idx) => (
             <span
               key={idx}
-              className="rounded-md bg-white/[0.03] border border-white/[0.06] px-2 py-0.5 text-[10px] text-slate-350"
+              className={`rounded-md border px-2 py-0.5 text-[10px] font-medium transition duration-200 ${getTechBadgeStyle(tech)}`}
             >
               {tech}
             </span>
