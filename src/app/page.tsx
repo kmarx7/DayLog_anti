@@ -63,8 +63,10 @@ export default function Home() {
       {/* Header */}
       <Header onOpenSettings={() => setIsSettingsOpen(true)} />
 
-      {/* Main Content container */}
-      <main className="flex-grow mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-12">
+      {/* Centering Wrapper */}
+      <div className="w-full flex justify-center">
+        {/* Main Content container */}
+        <main className="flex-grow w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 space-y-12">
         {/* Hero Area */}
         <section className="text-center space-y-4 max-w-2xl mx-auto py-4">
           <div className="inline-flex items-center gap-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 px-3 py-1 text-xs text-violet-400 font-semibold animate-pulse">
@@ -148,7 +150,8 @@ export default function Home() {
             )}
           </section>
         )}
-      </main>
+        </main>
+      </div>
 
       {/* Footer */}
       <footer className="border-t border-white/[0.04] bg-[#06080d]/60 py-6 text-center text-xs text-slate-500 mt-12">

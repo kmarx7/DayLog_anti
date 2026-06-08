@@ -174,8 +174,10 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
       {/* Header */}
       <Header onOpenSettings={() => setIsSettingsOpen(true)} />
 
-      {/* Main Container */}
-      <main className="flex-grow mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8 space-y-12">
+      {/* Centering Wrapper */}
+      <div className="w-full flex justify-center">
+        {/* Main Container */}
+        <main className="flex-grow w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8 space-y-12">
         
         {/* Intro Hero - Centered and Spaced */}
         <section className="space-y-4 max-w-3xl mx-auto text-center flex flex-col items-center py-4">
@@ -409,7 +411,8 @@ ${functionality.split("\n").filter(line => line.trim()).map(line => `- ${line.tr
 
         </div>
 
-      </main>
+        </main>
+      </div>
 
       {/* Settings Modal */}
       <SettingsModal
